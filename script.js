@@ -1,48 +1,13 @@
-const scenes = Array.from(document.querySelectorAll('.scene'));
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const stepText = document.getElementById('stepText');
-const dots = document.getElementById('dots');
-const addNote = document.getElementById('addNote');
-const noteResult = document.getElementById('noteResult');
-let current = 0;
-
-scenes.forEach((_, index) => {
-  const dot = document.createElement('span');
-  dot.className = 'dot';
-  dot.setAttribute('aria-hidden', 'true');
-  dots.appendChild(dot);
-});
-
-function render() {
-  scenes.forEach((scene, index) => scene.classList.toggle('active', index === current));
-  Array.from(dots.children).forEach((dot, index) => dot.classList.toggle('active', index === current));
-  stepText.textContent = `${current + 1} / ${scenes.length}`;
-  prevBtn.disabled = current === 0;
-  nextBtn.textContent = current === scenes.length - 1 ? '最初に戻る' : '次へ';
-}
-
-function goNext() {
-  current = current === scenes.length - 1 ? 0 : current + 1;
-  render();
-}
-
-function goPrev() {
-  if (current > 0) {
-    current -= 1;
-    render();
-  }
-}
-
-prevBtn.addEventListener('click', goPrev);
-nextBtn.addEventListener('click', goNext);
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowRight') goNext();
-  if (event.key === 'ArrowLeft') goPrev();
-});
-
-addNote.addEventListener('click', () => {
-  noteResult.hidden = false;
-});
-
+const steps=[...document.querySelectorAll('.step')];const prevBtn=document.getElementById('prevBtn');const nextBtn=document.getElementById('nextBtn');const stepCounter=document.getElementById('stepCounter');const stepTitle=document.getElementById('stepTitle');const progressFill=document.getElementById('progressFill');const dots=document.getElementById('dots');let current=0;
+steps.forEach((_,i)=>{const d=document.createElement('span');d.className='dot';d.setAttribute('aria-hidden','true');dots.appendChild(d)});
+function render(){steps.forEach((s,i)=>s.classList.toggle('active',i===current));[...dots.children].forEach((d,i)=>d.classList.toggle('active',i===current));stepCounter.textContent=`${current+1} / ${steps.length}`;stepTitle.textContent=steps[current].dataset.title;progressFill.style.width=`${((current+1)/steps.length)*100}%`;prevBtn.disabled=current===0;nextBtn.textContent=current===steps.length-1?'最初に戻る':'次へ';window.scrollTo({top:0,behavior:'smooth'})}
+function goNext(){current=current===steps.length-1?0:current+1;render()}function goPrev(){if(current>0){current--;render()}}prevBtn.addEventListener('click',goPrev);nextBtn.addEventListener('click',goNext);document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')goNext();if(e.key==='ArrowLeft')goPrev()});
+function addBubble(container,role,text){const div=document.createElement('div');div.className=`bubble ${role}`;const name=role==='ai'?'AIコーチャー':role==='boss'?'上司':'佐藤さん';div.innerHTML=`<b>${name}</b>${text}`;container.appendChild(div);div.scrollIntoView({behavior:'smooth',block:'nearest'})}
+document.querySelectorAll('.choice').forEach(btn=>btn.addEventListener('click',()=>{addBubble(document.getElementById('dailyChat'),'me',btn.textContent);addBubble(document.getElementById('dailyChat'),'ai',btn.dataset.reply);document.getElementById('dailyToast').hidden=false}));
+document.getElementById('setupMeeting').addEventListener('click',()=>{const r=document.getElementById('proposalResult');r.textContent='3者面談の候補日時を確認します。次のSTEPへ進んでください。';r.hidden=false});document.getElementById('skipMeeting').addEventListener('click',()=>{const r=document.getElementById('proposalResult');r.textContent='必要なタイミングでまた提案します。';r.hidden=false});
+document.querySelectorAll('.slot').forEach(slot=>slot.addEventListener('click',()=>{document.querySelectorAll('.slot').forEach(s=>s.classList.remove('selected'));slot.classList.add('selected');document.getElementById('scheduleResult').classList.remove('hidden')}));
+const docs=[['現在の状況',['新サービス企画資料の作成が進行中','直近2週間で突発業務が6件発生','当初予定より資料完成が2日遅れている']],['本人の行動',['会議で論点整理を実施','関係者調整を前倒しで実施','突発業務にも対応しながら主業務を継続']],['困りごと',['突発業務により作業時間が分断されている','優先順位の判断に迷っている','遅れをどう報告するべきか悩んでいる']],['AIからの提案',['突発業務の優先順位を上司とすり合わせる','資料の完成範囲を再定義する','次の2週間は判断基準を明確にする']]];
+document.getElementById('generateDoc').addEventListener('click',()=>{const wrap=document.getElementById('docCards');wrap.innerHTML='';docs.forEach((doc,i)=>setTimeout(()=>{const card=document.createElement('article');card.className='panel';card.innerHTML=`<h4>${i+1}. ${doc[0]}</h4><ul>${doc[1].map(x=>`<li>${x}</li>`).join('')}</ul>`;wrap.appendChild(card);if(i===docs.length-1)document.getElementById('startFromDoc').classList.remove('hidden')},i*350))});document.getElementById('startFromDoc').addEventListener('click',()=>{current=5;render()});
+const scenario=[['ai','本日の目的は、突発業務の増加によるスケジュール影響を共有し、次の進め方を合意することです。'],['boss','資料作成が少し遅れているようだけど、何が原因ですか？'],['me','突発対応が多く、作業時間が分断されていました。ただ、うまく説明できるか少し不安です。'],['ai','補足します。直近2週間で突発業務は6件あり、合計で約8時間対応しています。その一方で、会議での論点整理や関係者調整は予定通り進んでいます。'],['boss','なるほど。遅れの背景が分かりました。突発業務もかなり対応してくれていたんですね。'],['me','はい。どこまで予定を守るべきか、どこで相談すべきか迷っていました。'],['ai','相談テーマとしては、1つ目が突発業務の優先順位、2つ目が資料完成範囲の再定義、3つ目が次回からの報告タイミングです。'],['boss','まず、突発業務については優先順位をこちらでも整理します。タイムリーに報告してくれてありがとう。'],['me','ありがとうございます。資料はどこまで完成させるのがよさそうですか？'],['boss','今回は意思決定に必要な判断軸とおすすめ案を優先しましょう。詳細資料は次の段階で大丈夫です。'],['ai','では合意事項として、資料は判断軸とおすすめ案を優先、突発業務は発生時点で優先度を確認、次回から遅れが見えたら早めに相談、で記録します。']];let speech=0;const meetingChat=document.getElementById('meetingChat');function showSpeech(){if(speech<scenario.length){addBubble(meetingChat,scenario[speech][0],scenario[speech][1]);speech++}if(speech>=scenario.length){document.getElementById('nextSpeech').classList.add('hidden');document.getElementById('finishMeeting').classList.remove('hidden')}}document.getElementById('startMeeting').addEventListener('click',()=>{meetingChat.innerHTML='';speech=0;document.getElementById('nextSpeech').classList.remove('hidden');document.getElementById('startMeeting').disabled=true;showSpeech()});document.getElementById('nextSpeech').addEventListener('click',showSpeech);document.getElementById('finishMeeting').addEventListener('click',()=>{current=6;render()});
+document.getElementById('generateReport').addEventListener('click',()=>document.getElementById('report').classList.remove('hidden'));document.getElementById('approveReport').addEventListener('click',()=>document.getElementById('completeMessage').classList.remove('hidden'));document.getElementById('editComment').addEventListener('click',()=>document.getElementById('commentArea').classList.remove('hidden'));document.getElementById('saveReport').addEventListener('click',()=>document.getElementById('completeMessage').classList.remove('hidden'));
 render();
