@@ -8,30 +8,35 @@
 </head>
 <body>
   <div class="workspace">
-    <aside class="work-nav" aria-label="業務ナビゲーション">
-      <div class="work-logo">W</div>
-      <button class="nav-item active">チャット</button>
-      <button class="nav-item">予定</button>
-      <button class="nav-item">会議</button>
+    <aside class="app-rail" aria-label="アプリナビゲーション">
+      <div class="rail-logo" aria-hidden="true">W</div>
+      <button class="rail-item active" data-app="Chat"><span class="rail-icon chat-icon"></span><span>Chat</span></button>
+      <button class="rail-item" data-app="Calendar"><span class="rail-icon cal-icon"></span><span>Calendar</span></button>
+      <button class="rail-item" data-app="Slides"><span class="rail-icon slide-icon"></span><span>Slides</span></button>
+      <button class="rail-item" data-app="Meeting"><span class="rail-icon meet-icon"></span><span>Meeting</span></button>
+      <button class="rail-item" data-app="Record"><span class="rail-icon rec-icon"></span><span>Record</span></button>
     </aside>
 
-    <main id="workMain" class="work-main" aria-live="polite"></main>
+    <section class="shell">
+      <header class="top-bar">
+        <div id="appName" class="app-name">Work Teams</div>
+        <label class="search-box"><span>⌕</span><input type="search" placeholder="検索" aria-label="検索" /></label>
+        <div class="user-dot" aria-label="ユーザー">本</div>
+      </header>
+      <main id="workMain" class="work-main" aria-live="polite"></main>
+    </section>
 
-    <button id="coachTab" class="coach-tab hidden" aria-label="AI Coachを開く">AI<br>Coach</button>
-
+    <button id="coachTab" class="coach-tab hidden" aria-label="AI Coachを開く">AI Coach</button>
     <aside id="coachPanel" class="coach-panel" aria-label="AI Coachパネル">
       <header class="coach-header">
-        <div>
-          <strong>AI Coach</strong>
-          <span id="coachStatus">相談中</span>
-        </div>
-        <div class="counter"><span id="stepCounter">1 / 5</span><button id="minimizeBtn" class="icon-btn" aria-label="最小化">−</button></div>
+        <div><strong>AI Coach</strong><span id="coachStatus">相談中</span></div>
+        <div class="counter"><span id="stepCounter">1 / 5</span><button id="minimizeBtn" class="icon-btn" aria-label="閉じる">×</button></div>
       </header>
       <section id="coachContent" class="coach-content"></section>
       <footer class="coach-nav">
         <button id="prevBtn" class="ghost">戻る</button>
-        <button id="skipBtn" class="ghost">スキップ</button>
         <button id="nextBtn">次へ</button>
+        <button id="skipBtn" class="ghost">スキップ</button>
       </footer>
     </aside>
   </div>
