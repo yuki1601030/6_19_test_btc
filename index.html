@@ -3,96 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Coach</title>
+  <title>Work Chat + AI Coach Prototype</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <header class="app-header">
-      <div class="brand"><strong>AI Coach</strong><span>成長相談サポート</span></div>
-      <div class="step-status"><span id="stepTitle">日常業務相談</span><span id="stepCounter">1 / 10</span></div>
-      <div class="progress-track" aria-label="進捗"><span id="progressFill"></span></div>
-    </header>
+  <div class="workspace">
+    <aside class="work-nav" aria-label="Work Chat navigation">
+      <div class="work-logo">WC</div>
+      <button class="nav-item active">チャット</button>
+      <button class="nav-item">会議</button>
+      <button class="nav-item">ファイル</button>
+      <button class="nav-item">タスク</button>
+    </aside>
 
-    <main id="steps" aria-live="polite">
-      <section class="step active" data-title="日常業務相談">
-        <div class="layout two-col">
-          <div>
-            <h1>日常業務相談</h1>
-            <article class="card situation">新サービス企画の資料作成中。優先順位や上司への報告タイミングに迷っています。</article>
-            <div id="dailyChat" class="chat-box">
-              <div class="bubble ai"><b>AIコーチャー</b><span>相談内容を入力してください。業務ログとして整理します。</span></div>
-            </div>
+    <main id="workMain" class="work-main">
+      <header class="work-header">
+        <div>
+          <p class="eyebrow">Work Chat</p>
+          <h1 id="mainTitle">新サービス企画チーム</h1>
+        </div>
+        <div id="mainBadges" class="badges">
+          <span>資料作成中</span><span class="alert">追加調査依頼</span>
+        </div>
+      </header>
+
+      <section id="normalWork" class="work-grid">
+        <div class="chat-area card">
+          <div class="section-title">チームチャット</div>
+          <div id="workChatLog" class="work-chat-log"></div>
+        </div>
+        <aside class="side-work">
+          <div class="card">
+            <div class="section-title">会議予定</div>
+            <ul id="meetingList" class="compact-list">
+              <li>14:00 論点整理ミーティング</li>
+              <li>15:00 会議準備</li>
+            </ul>
           </div>
-          <div class="card input-card">
-            <label for="consultInput">相談文</label>
-            <textarea id="consultInput" placeholder="例：突発業務が多くて予定が遅れている。上司にいつ報告すべきか迷っています"></textarea>
-            <div class="chips">
-              <button class="chip" data-fill="資料の方向性を相談したい">資料の方向性を相談したい</button>
-              <button class="chip" data-fill="会議で何を話すべきか相談したい">会議で何を話すべきか相談したい</button>
-              <button class="chip" data-fill="上司への報告タイミングを相談したい">上司への報告タイミングを相談したい</button>
-              <button class="chip" data-fill="突発業務が多くて予定が遅れている">突発業務が多くて予定が遅れている</button>
-            </div>
-            <button id="sendConsult" class="primary">AIに相談する</button>
-            <p id="dailyToast" class="toast" hidden>今日の相談ログに追加されました</p>
+          <div class="card">
+            <div class="section-title">資料作成タスク</div>
+            <ul id="taskList" class="task-list">
+              <li><input type="checkbox" checked /> 企画資料の判断軸を整理</li>
+              <li><input type="checkbox" /> 関係者コメントを反映</li>
+              <li><input type="checkbox" /> 追加調査の依頼対応</li>
+              <li><input type="checkbox" /> 15:00 会議準備</li>
+            </ul>
           </div>
+          <div class="card notification">
+            <div class="section-title">突発通知</div>
+            <p>追加調査依頼が入りました</p>
+            <p>資料提出予定に2日影響が出る可能性があります</p>
+            <p id="dynamicNotice" class="hidden"></p>
+          </div>
+        </aside>
+      </section>
+
+      <section id="meetingWork" class="meeting-work hidden">
+        <div class="participants">
+          <article><b>本人</b><span>状況を説明</span></article>
+          <article><b>上司</b><span>進め方を確認</span></article>
+          <article><b>AI Coach</b><span>補足・整理</span></article>
+        </div>
+        <div class="card meeting-log-card">
+          <div class="section-title">会議ログ</div>
+          <div id="meetingLog" class="meeting-log"></div>
         </div>
       </section>
 
-      <section class="step" data-title="成果・困りごとの記録">
-        <h1>成果・困りごとの記録</h1>
-        <div class="layout two-col">
-          <article class="card"><h2>今日の自動記録</h2><ul><li>会議で論点を整理</li><li>資料作成で判断軸を検討</li><li>関係者との認識合わせ</li></ul></article>
-          <article class="card input-card"><label for="effortInput">今日、実は頑張ったこと</label><textarea id="effortInput" placeholder="例：会議前に関係者へ事前確認した"></textarea><label for="troubleInput">今日、困ったこと</label><textarea id="troubleInput" placeholder="例：突発対応が入り、資料作成が進まなかった"></textarea><button id="addLog" class="primary">記録に追加する</button></article>
+      <section id="summaryWork" class="summary-work hidden">
+        <div class="card success-card">
+          <h2>面談サマリー</h2>
+          <p>突発業務の影響と本人の貢献が整理され、次の進め方が合意されました。</p>
         </div>
-        <div class="layout two-col"><article class="card"><h2>本人補足ログ</h2><div id="personalLogs" class="log-list muted">まだ追加されていません</div></article><article class="card notice"><h2>AIコメント</h2><p id="logAiComment">入力された補足をもとに、背景や負荷を整理します。</p></article></div>
-      </section>
-
-      <section class="step" data-title="2週間の蓄積">
-        <h1>2週間の蓄積</h1>
-        <div class="grid four"><article class="card metric"><span>成果</span><b>会議で論点を整理し、次アクションを明確化</b></article><article class="card metric"><span>行動</span><b>関係者との認識ズレを早めに解消</b></article><article class="card metric"><span>学び</span><b>判断軸を先に示すと議論が進みやすい</b></article><article class="card metric warn"><span>困りごと</span><b>突発業務が増え、スケジュールが遅れ気味</b></article></div>
-        <div id="dashboardReflections" class="card"></div>
-        <div class="layout two-col"><article class="card"><h2>傾向</h2><div class="bar"><span style="width:80%">論点整理 80%</span></div><div class="bar"><span style="width:70%">関係者調整 70%</span></div><div class="bar"><span style="width:45%">優先順位判断 45%</span></div><div class="bar"><span style="width:90%">突発業務対応 90%</span></div></article><article class="card notice"><h2>AI分析コメント</h2><p>成果は蓄積されています。一方で、突発業務や優先順位判断に関する記録が増えています。本人の努力だけでは解決しにくい可能性があるため、上司との対話候補にします。</p></article></div>
-      </section>
-
-      <section class="step" data-title="面談提案">
-        <h1>面談提案</h1>
-        <article class="card notice large">直近2週間で、突発業務対応と優先順位判断の迷いが複数回記録されています。スケジュール影響が大きくなる前に、上司と15分だけ状況をすり合わせることをおすすめします。</article>
-        <article class="card"><h2>面談提案理由</h2><ul id="proposalReasons"><li>突発業務が増えている</li><li>優先順位判断で迷う場面が続いている</li><li>本人の努力や背景が見えにくくなる前に共有した方がよい</li></ul></article>
-        <div class="actions"><button id="acceptMeeting" class="primary">面談を設定する</button><button id="declineMeeting" class="secondary">まだ設定しない</button></div>
-        <div id="declineBox" class="card hidden"><label for="declineReason">見送る理由</label><textarea id="declineReason" placeholder="例：まだ自分で整理したい、上司に相談するほどではない"></textarea></div><p id="proposalToast" class="toast" hidden></p>
-      </section>
-
-      <section class="step" data-title="3者会議設定">
-        <h1>3者会議設定</h1>
-        <div class="layout two-col"><article class="card"><h2>候補日時</h2><div class="slots"><button class="slot">今日 16:30-16:45</button><button class="slot">明日 10:00-10:15</button><button class="slot">明日 15:00-15:15</button></div></article><article class="card input-card"><label for="meetingPurpose">上司と一番相談したいこと</label><textarea id="meetingPurpose" placeholder="例：突発業務が増えた時の優先順位を確認したい"></textarea><button id="confirmSchedule" class="primary">この内容で設定する</button></article></div>
-        <article id="scheduleComplete" class="card complete-card hidden"></article>
-      </section>
-
-      <section class="step" data-title="相談資料作成">
-        <h1>相談資料作成</h1><button id="generateDoc" class="primary">相談資料を生成する</button><article id="docCard" class="card report hidden"></article><div id="docEditBox" class="hidden"><textarea id="docEditor"></textarea></div><div class="actions"><button id="editDoc" class="secondary hidden">この資料を修正する</button><button id="goMeeting" class="primary hidden">この資料で面談へ進む</button></div>
-      </section>
-
-      <section class="step" data-title="3者面談">
-        <h1>3者面談</h1><div class="participants"><span>本人</span><span>上司</span><span>AIコーチャー</span></div><div id="meetingChat" class="chat-box meeting"></div><div id="meetingInputBox" class="card input-card hidden"><label id="meetingInputLabel" for="meetingInput">あなたならどう答えますか？</label><textarea id="meetingInput" placeholder="例：突発対応が多く、作業時間が分断されていました"></textarea><div class="actions"><button id="speakBtn" class="primary">発言する</button><button id="assistBtn" class="secondary hidden">AIに補足してもらう</button></div></div><div class="actions"><button id="startMeeting" class="primary">会議を開始する</button><button id="nextSpeech" class="secondary hidden">次の発言へ</button><button id="finishMeeting" class="primary hidden">面談を終了する</button></div>
-      </section>
-
-      <section class="step" data-title="面談後の整理">
-        <h1>面談後の整理</h1><div class="grid three"><article class="card"><h2>上司が理解したこと</h2><ul><li>スケジュール遅れは本人の怠慢ではなく、突発業務増加が主因</li><li>本人は会議整理や関係者調整で貢献していた</li><li>優先順位の判断に迷いがあった</li></ul></article><article class="card"><h2>本人が安心したこと</h2><ul><li>遅れの背景を客観データで説明できた</li><li>上司から突発業務対応への労いがあった</li><li>次に優先すべき範囲が明確になった</li></ul></article><article class="card"><h2>合意した次の行動</h2><ul><li>資料は判断軸とおすすめ案を優先</li><li>突発業務は発生時に優先度を確認</li><li>遅れが見えたら早めに相談</li><li>2週間後に進捗を確認</li></ul></article></div><article class="card input-card"><label for="agreementMemo">合意事項メモ</label><textarea id="agreementMemo">資料は判断軸とおすすめ案を優先。突発業務は発生時に優先度を確認。遅れが見えたら早めに相談。</textarea><button id="saveAgreement" class="primary">合意事項を保存する</button><p id="agreementToast" class="toast" hidden>合意事項を保存しました</p></article>
-      </section>
-
-      <section class="step" data-title="評価レポート">
-        <h1>評価レポート</h1><button id="generateReport" class="primary">評価レポートを作成する</button><article id="reportCard" class="card report hidden"></article><div class="actions"><button id="approveReport" class="primary hidden">承認する</button><button id="editComment" class="secondary hidden">コメントを加筆する</button></div><div id="managerCommentBox" class="card input-card hidden"><label for="managerComment">上司コメント</label><textarea id="managerComment">突発業務が多い中でも、会議整理と関係者調整を継続できていた点は評価できる。今後は、遅れが見えた段階で早めに相談できるとさらによい。</textarea><button id="saveReport" class="primary">保存する</button></div><div id="completeMessage" class="complete-message hidden">日々の記録・3者面談・上司コメントが、次の成長記録として保存されました。</div>
-      </section>
-
-      <section class="step" data-title="テストフィードバック">
-        <h1>テストフィードバック</h1><article class="card"><h2>各ステップのメモ</h2><div id="feedbackList" class="feedback-list"></div></article><article class="card input-card final-questions"><h2>最後の質問</h2></article><p id="finalToast" class="toast" hidden>テスト回答を保存しました</p>
       </section>
     </main>
 
-    <section id="testMemoPanel" class="test-memo card"><h2>テストメモ</h2><textarea id="testMemo" placeholder="この画面で感じたこと、違和感、使いたい/使いたくない理由をメモ"></textarea><div class="reactions"><button data-reaction="使いたい">使いたい</button><button data-reaction="どちらとも言えない">どちらとも言えない</button><button data-reaction="違和感あり">違和感あり</button></div></section>
+    <button id="coachTab" class="coach-tab hidden" aria-label="AI Coachを開く">AI<br>Coach</button>
 
-    <footer class="controls"><button id="prevBtn">戻る</button><div><div id="navMessage" class="nav-message"></div><button id="skipBtn" class="link-btn">スキップして次へ</button></div><button id="nextBtn">次へ</button></footer>
+    <aside id="coachPanel" class="coach-panel" aria-label="AI Coach side panel">
+      <header class="coach-header">
+        <div><strong>AI Coach</strong><span>業務中の相談・記録</span></div>
+        <button id="minimizeBtn" class="icon-btn" title="最小化">−</button>
+      </header>
+      <div class="mini-progress"><span id="stepCounter">1 / 11</span><div><i id="progressFill"></i></div></div>
+      <section id="coachContent" class="coach-content"></section>
+      <section class="test-memo">
+        <label for="testMemo">テストメモ</label>
+        <textarea id="testMemo" placeholder="この画面で感じたこと、違和感、使いたい/使いたくない理由をメモ"></textarea>
+        <div class="reactions">
+          <button data-reaction="使いたい">使いたい</button>
+          <button data-reaction="どちらとも言えない">どちらとも言えない</button>
+          <button data-reaction="違和感あり">違和感あり</button>
+        </div>
+      </section>
+      <footer class="coach-nav">
+        <button id="prevBtn">戻る</button>
+        <div><p id="navMessage"></p><button id="skipBtn" class="text-btn">スキップして次へ</button></div>
+        <button id="nextBtn">次へ</button>
+      </footer>
+    </aside>
   </div>
   <script src="script.js"></script>
 </body>
