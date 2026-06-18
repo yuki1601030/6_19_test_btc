@@ -3,102 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Work Chat + AI Coach Prototype</title>
+  <title>AI Coach Prototype</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="workspace">
-    <aside class="work-nav" aria-label="Work Chat navigation">
-      <div class="work-logo">WC</div>
+    <aside id="workNav" class="work-nav" aria-label="業務ナビゲーション">
+      <div class="work-logo">W</div>
       <button class="nav-item active">チャット</button>
       <button class="nav-item">会議</button>
       <button class="nav-item">ファイル</button>
       <button class="nav-item">タスク</button>
     </aside>
 
-    <main id="workMain" class="work-main">
-      <header class="work-header">
-        <div>
-          <p class="eyebrow">Work Chat</p>
-          <h1 id="mainTitle">新サービス企画チーム</h1>
-        </div>
-        <div id="mainBadges" class="badges">
-          <span>資料作成中</span><span class="alert">追加調査依頼</span>
-        </div>
-      </header>
-
-      <section id="normalWork" class="work-grid">
-        <div class="chat-area card">
-          <div class="section-title">チームチャット</div>
-          <div id="workChatLog" class="work-chat-log"></div>
-        </div>
-        <aside class="side-work">
-          <div class="card">
-            <div class="section-title">会議予定</div>
-            <ul id="meetingList" class="compact-list">
-              <li>14:00 論点整理ミーティング</li>
-              <li>15:00 会議準備</li>
-            </ul>
-          </div>
-          <div class="card">
-            <div class="section-title">資料作成タスク</div>
-            <ul id="taskList" class="task-list">
-              <li><input type="checkbox" checked /> 企画資料の判断軸を整理</li>
-              <li><input type="checkbox" /> 関係者コメントを反映</li>
-              <li><input type="checkbox" /> 追加調査の依頼対応</li>
-              <li><input type="checkbox" /> 15:00 会議準備</li>
-            </ul>
-          </div>
-          <div class="card notification">
-            <div class="section-title">突発通知</div>
-            <p>追加調査依頼が入りました</p>
-            <p>資料提出予定に2日影響が出る可能性があります</p>
-            <p id="dynamicNotice" class="hidden"></p>
-          </div>
-        </aside>
-      </section>
-
-      <section id="meetingWork" class="meeting-work hidden">
-        <div class="participants">
-          <article><b>本人</b><span>状況を説明</span></article>
-          <article><b>上司</b><span>進め方を確認</span></article>
-          <article><b>AI Coach</b><span>補足・整理</span></article>
-        </div>
-        <div class="card meeting-log-card">
-          <div class="section-title">会議ログ</div>
-          <div id="meetingLog" class="meeting-log"></div>
-        </div>
-      </section>
-
-      <section id="summaryWork" class="summary-work hidden">
-        <div class="card success-card">
-          <h2>面談サマリー</h2>
-          <p>突発業務の影響と本人の貢献が整理され、次の進め方が合意されました。</p>
-        </div>
-      </section>
-    </main>
+    <main id="workMain" class="work-main" aria-live="polite"></main>
 
     <button id="coachTab" class="coach-tab hidden" aria-label="AI Coachを開く">AI<br>Coach</button>
 
-    <aside id="coachPanel" class="coach-panel" aria-label="AI Coach side panel">
+    <aside id="coachPanel" class="coach-panel" aria-label="AI Coachパネル">
       <header class="coach-header">
-        <div><strong>AI Coach</strong><span>業務中の相談・記録</span></div>
-        <button id="minimizeBtn" class="icon-btn" title="最小化">−</button>
-      </header>
-      <div class="mini-progress"><span id="stepCounter">1 / 11</span><div><i id="progressFill"></i></div></div>
-      <section id="coachContent" class="coach-content"></section>
-      <section class="test-memo">
-        <label for="testMemo">テストメモ</label>
-        <textarea id="testMemo" placeholder="この画面で感じたこと、違和感、使いたい/使いたくない理由をメモ"></textarea>
-        <div class="reactions">
-          <button data-reaction="使いたい">使いたい</button>
-          <button data-reaction="どちらとも言えない">どちらとも言えない</button>
-          <button data-reaction="違和感あり">違和感あり</button>
+        <div>
+          <strong>AI Coach</strong>
+          <span id="coachStatus">相談中</span>
         </div>
-      </section>
+        <div class="counter"><span id="stepCounter">1 / 8</span><button id="minimizeBtn" class="icon-btn" aria-label="最小化">−</button></div>
+      </header>
+      <section id="coachContent" class="coach-content"></section>
       <footer class="coach-nav">
         <button id="prevBtn">戻る</button>
-        <div><p id="navMessage"></p><button id="skipBtn" class="text-btn">スキップして次へ</button></div>
+        <button id="skipBtn" class="ghost">スキップ</button>
         <button id="nextBtn">次へ</button>
       </footer>
     </aside>
