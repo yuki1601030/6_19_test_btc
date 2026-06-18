@@ -8,12 +8,11 @@
 </head>
 <body>
   <div class="workspace">
-    <aside id="workNav" class="work-nav" aria-label="業務ナビゲーション">
+    <aside class="work-nav" aria-label="業務ナビゲーション">
       <div class="work-logo">W</div>
       <button class="nav-item active">チャット</button>
+      <button class="nav-item">予定</button>
       <button class="nav-item">会議</button>
-      <button class="nav-item">ファイル</button>
-      <button class="nav-item">タスク</button>
     </aside>
 
     <main id="workMain" class="work-main" aria-live="polite"></main>
@@ -26,11 +25,11 @@
           <strong>AI Coach</strong>
           <span id="coachStatus">相談中</span>
         </div>
-        <div class="counter"><span id="stepCounter">1 / 8</span><button id="minimizeBtn" class="icon-btn" aria-label="最小化">−</button></div>
+        <div class="counter"><span id="stepCounter">1 / 5</span><button id="minimizeBtn" class="icon-btn" aria-label="最小化">−</button></div>
       </header>
       <section id="coachContent" class="coach-content"></section>
       <footer class="coach-nav">
-        <button id="prevBtn">戻る</button>
+        <button id="prevBtn" class="ghost">戻る</button>
         <button id="skipBtn" class="ghost">スキップ</button>
         <button id="nextBtn">次へ</button>
       </footer>
